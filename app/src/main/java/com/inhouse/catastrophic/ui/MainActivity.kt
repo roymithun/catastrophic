@@ -2,6 +2,8 @@ package com.inhouse.catastrophic.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.inhouse.catastrophic.app.BaseApplication
 import com.inhouse.catastrophic.databinding.ActivityMainBinding
 import com.inhouse.catastrophic.ui.adapter.PhotoAdapter
@@ -31,11 +33,35 @@ class MainActivity : AppCompatActivity() {
         configurePhotoRecyclerView()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.rvCatPhotos.addOnScrollListener(onScrollListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.rvCatPhotos.removeOnScrollListener(onScrollListener)
+    }
+
     private fun configurePhotoRecyclerView() {
         photoAdapter = PhotoAdapter()
         val recyclerView = binding.rvCatPhotos
         recyclerView.setHasFixedSize(true)
         recyclerView.setItemViewCacheSize(20)
         recyclerView.adapter = photoAdapter
+    }
+
+    private val onScrollListener by lazy {
+        object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as GridLayoutManager
+                recyclerView.adapter?.let {
+                    if (layoutManager.findLastCompletelyVisibleItemPosition() == it.itemCount - 1) {
+                        mainViewModel.loadMore()
+                    }
+                }
+            }
+        }
     }
 }

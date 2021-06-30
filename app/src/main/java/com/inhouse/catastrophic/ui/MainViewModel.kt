@@ -1,32 +1,30 @@
 package com.inhouse.catastrophic.ui
 
 import android.util.Log
-import androidx.lifecycle.*
-import com.inhouse.catastrophic.ui.data.Cat
-import com.inhouse.catastrophic.ui.data.CatsApi
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.inhouse.catastrophic.app.repo.CatRepository
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val catsApi: CatsApi) : ViewModel() {
+class MainViewModel(private val repository: CatRepository) : ViewModel() {
     companion object {
         const val TAG: String = "MainViewModel"
-        const val RESPONSE_LIMIT = 20
     }
 
-    class MainViewModelFactory(private val catsApi: CatsApi) :
+    class MainViewModelFactory(private val repository: CatRepository) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return MainViewModel(catsApi) as T
+                return MainViewModel(repository) as T
             }
             throw IllegalArgumentException("ViewModel is not assignable")
         }
 
     }
 
-    private val _catsList = MutableLiveData<List<Cat>>()
-    val catList: LiveData<List<Cat>>
-        get() = _catsList
+    val catsList = repository.catsList
 
     private var pageIdx: Int = 1
 
@@ -37,13 +35,15 @@ class MainViewModel(private val catsApi: CatsApi) : ViewModel() {
     private fun getCats() {
         viewModelScope.launch {
             try {
-                val result: List<Cat>? = catsApi.getCats(RESPONSE_LIMIT, pageIdx, "png")
-                Log.d(TAG, "result = $result")
-                result?.let { _catsList.value = result }
+                repository.getCats(pageIdx)
             } catch (e: Exception) {
                 Log.d(TAG, "error = $e")
             }
 
         }
+    }
+
+    fun loadMore() {
+        getCats()
     }
 }

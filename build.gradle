@@ -8,8 +8,9 @@ buildscript {
         version_lifecycle = "2.3.1"
         version_dagger = "2.37"
         version_retrofit = "2.9.0"
-        version_moshi = "1.8.0"
+        version_moshi = "1.12.0"
         version_coil = "1.2.2"
+        version_room = "2.3.0"
     }
     repositories {
         google()

@@ -13,10 +13,10 @@ const val BASE_URL = "https://api.thecatapi.com/v1/images/"
 @Module
 class NetworkModule {
     @Provides
-    fun moshi() = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+    fun moshi(): Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
     @Provides
-    fun retrofit(moshi: Moshi) =
+    fun retrofit(moshi: Moshi): Retrofit =
         Retrofit.Builder()
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .baseUrl(BASE_URL).build()

@@ -58,5 +58,11 @@ dependencies {
     // JSON parser
     implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
 
+    // Image processing
     implementation "io.coil-kt:coil:$version_coil"
+
+    // Room dependency
+    implementation "androidx.room:room-runtime:$version_room"
+    kapt "androidx.room:room-compiler:$version_room"
+    implementation "androidx.room:room-ktx:$version_room"
 }
