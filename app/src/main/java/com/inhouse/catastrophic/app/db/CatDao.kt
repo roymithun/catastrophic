@@ -12,5 +12,5 @@ interface CatDao {
     fun getAllCats(): LiveData<List<CatEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(videos: List<CatEntity>)
+    suspend fun insertAll(videos: List<CatEntity>)
 }
