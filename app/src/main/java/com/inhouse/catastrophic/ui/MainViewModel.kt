@@ -1,16 +1,20 @@
 package com.inhouse.catastrophic.ui
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.inhouse.catastrophic.app.repo.CatRepository
+import com.inhouse.catastrophic.app.utils.Resource
+import com.inhouse.catastrophic.app.utils.Status
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val repositoryDefault: CatRepository) : ViewModel() {
     companion object {
         const val TAG: String = "MainViewModel"
     }
+
+    private val _networkErrorStatus = MutableLiveData<Boolean?>()
+    val networkError: LiveData<Boolean?> = _networkErrorStatus
 
     class MainViewModelFactory(private val repositoryDefault: CatRepository) :
         ViewModelProvider.Factory {
@@ -24,26 +28,43 @@ class MainViewModel(private val repositoryDefault: CatRepository) : ViewModel() 
 
     }
 
-    val catsList = repositoryDefault.catsList()
-
     private var pageIdx: Int = 1
 
     init {
         getCats()
     }
 
+    val catsList = repositoryDefault.catsList()
+
     private fun getCats() {
         viewModelScope.launch {
-            try {
-                repositoryDefault.fetchAndInsertCatsIntoDb(pageIdx)
-            } catch (e: Exception) {
-                Log.d(TAG, "error = $e")
-            }
-
+            val result: Resource<Void> = repositoryDefault.fetchAndInsertCatsIntoDb(pageIdx)
+            delay(100)
+            _networkErrorStatus.postValue(
+                when (result.status) {
+                    Status.ERROR -> {
+                        Log.d(
+                            TAG,
+                            "gibow catsList.value.isEmpty() = ${catsList.value?.isEmpty()} or null = ${catsList.value}"
+                        )
+                        catsList.value.isNullOrEmpty()
+                    }
+                    else -> false
+                }
+            )
         }
     }
 
+    fun refreshForInitialDataFetch() {
+        getCats()
+    }
+
+    fun resetNetworkErrorStatus() {
+        _networkErrorStatus.value = null
+    }
+
     fun loadMore() {
+        pageIdx++
         getCats()
     }
 }

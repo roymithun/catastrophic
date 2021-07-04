@@ -1,6 +1,8 @@
 package com.inhouse.catastrophic.ui
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var photoAdapter: PhotoAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("MainActivity", "gibow onCreate")
         mainComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -30,15 +33,34 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         binding.mainViewModel = mainViewModel
+        mainViewModel.networkError.observe(this) {
+            Log.d("MainActivity", "gibow networkError status = $it")
+            it?.let {
+                if (it) {
+                    binding.rvCatPhotos.visibility = View.GONE
+                    binding.llNetworkError.visibility = View.VISIBLE
+                } else {
+                    binding.rvCatPhotos.visibility = View.VISIBLE
+                    binding.llNetworkError.visibility = View.GONE
+                }
+                mainViewModel.resetNetworkErrorStatus()
+            }
+        }
         configurePhotoRecyclerView()
     }
 
+    override fun onRestart() {
+        Log.d("MainActivity", "gibow onRestart")
+        super.onRestart()
+    }
     override fun onResume() {
+        Log.d("MainActivity", "gibow onResume")
         super.onResume()
         binding.rvCatPhotos.addOnScrollListener(onScrollListener)
     }
 
     override fun onPause() {
+        Log.d("MainActivity", "gibow onPause")
         super.onPause()
         binding.rvCatPhotos.removeOnScrollListener(onScrollListener)
     }

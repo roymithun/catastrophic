@@ -8,9 +8,9 @@ import androidx.room.Query
 
 @Dao
 interface CatDao {
-    @Query("SELECT * from catentity")
+    @Query("SELECT * from cat_items")
     fun getAllCats(): LiveData<List<CatEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(videos: List<CatEntity>)
 }
