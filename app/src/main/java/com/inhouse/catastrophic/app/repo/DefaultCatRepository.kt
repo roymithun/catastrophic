@@ -10,14 +10,11 @@ import com.inhouse.catastrophic.ui.data.Cat
 import com.inhouse.catastrophic.ui.data.CatsApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 class DefaultCatRepository(
     private val catDatabase: CatDatabase,
+    private val catsApi: CatsApi
 ) : CatRepository {
-
-    @Inject
-    lateinit var catsApi: CatsApi
 
     override suspend fun fetchAndInsertCatsIntoDb(page: Int) {
         withContext(Dispatchers.IO) {

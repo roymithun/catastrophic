@@ -6,6 +6,7 @@ import com.inhouse.catastrophic.app.db.CatDatabase
 import com.inhouse.catastrophic.app.repo.CatRepository
 import com.inhouse.catastrophic.app.repo.DefaultCatRepository
 import com.inhouse.catastrophic.app.utils.DATABASE_NAME
+import com.inhouse.catastrophic.ui.data.CatsApi
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -18,6 +19,6 @@ class DataModule {
         Room.databaseBuilder(context, CatDatabase::class.java, DATABASE_NAME).build()
 
     @Provides
-    fun catRepository(catDatabase: CatDatabase): CatRepository =
-        DefaultCatRepository(catDatabase)
+    fun catRepository(catDatabase: CatDatabase, catsApi: CatsApi): CatRepository =
+        DefaultCatRepository(catDatabase, catsApi)
 }

@@ -6,7 +6,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [TestModule::class, DataModule::class])
+@Component(modules = [TestModule::class, NetworkModule::class, DataModule::class])
 interface TestAppComponent : AppComponent {
     @ExperimentalCoroutinesApi
     fun inject(catDaoTest: CatDaoTest)
