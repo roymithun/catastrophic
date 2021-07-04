@@ -31,7 +31,6 @@ project.afterEvaluate {
                     '**/*Test*.*',
                     'android/**/*.*'
             ]
-            println("gibow " + variant.javaCompileProvider.get().destinationDir)
             // https://github.com/google/protobuf-gradle-plugin/issues/295#issuecomment-458005344
             def javaClasses = fileTree(dir: variant.javaCompileProvider.get().destinationDir, excludes: excludes)
             def kotlinClasses = fileTree(dir: "${buildDir}/tmp/kotlin-classes/${variantName}", excludes: excludes)

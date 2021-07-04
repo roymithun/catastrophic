@@ -38,15 +38,12 @@ class MainViewModel(private val repositoryDefault: CatRepository) : ViewModel() 
 
     private fun getCats() {
         viewModelScope.launch {
+            Log.d(TAG, "pageIdx = $pageIdx")
             val result: Resource<Void> = repositoryDefault.fetchAndInsertCatsIntoDb(pageIdx)
             delay(100)
             _networkErrorStatus.postValue(
                 when (result.status) {
                     Status.ERROR -> {
-                        Log.d(
-                            TAG,
-                            "gibow catsList.value.isEmpty() = ${catsList.value?.isEmpty()} or null = ${catsList.value}"
-                        )
                         catsList.value.isNullOrEmpty()
                     }
                     else -> false

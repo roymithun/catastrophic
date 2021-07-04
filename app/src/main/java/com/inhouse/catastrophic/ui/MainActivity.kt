@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var photoAdapter: PhotoAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("MainActivity", "gibow onCreate")
         mainComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -34,7 +33,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.mainViewModel = mainViewModel
         mainViewModel.networkError.observe(this) {
-            Log.d("MainActivity", "gibow networkError status = $it")
             it?.let {
                 if (it) {
                     binding.rvCatPhotos.visibility = View.GONE
@@ -49,18 +47,12 @@ class MainActivity : AppCompatActivity() {
         configurePhotoRecyclerView()
     }
 
-    override fun onRestart() {
-        Log.d("MainActivity", "gibow onRestart")
-        super.onRestart()
-    }
     override fun onResume() {
-        Log.d("MainActivity", "gibow onResume")
         super.onResume()
         binding.rvCatPhotos.addOnScrollListener(onScrollListener)
     }
 
     override fun onPause() {
-        Log.d("MainActivity", "gibow onPause")
         super.onPause()
         binding.rvCatPhotos.removeOnScrollListener(onScrollListener)
     }

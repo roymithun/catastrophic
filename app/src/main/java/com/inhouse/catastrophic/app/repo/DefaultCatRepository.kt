@@ -30,8 +30,8 @@ class DefaultCatRepository(
                         it.let {
                             catDatabase.catDao().insertAll(it.map { cat ->
                                 CatEntity(
-                                    cat.id,
-                                    cat.url
+                                    catId = cat.id,
+                                    url = cat.url
                                 )
                             })
                         }
@@ -48,6 +48,6 @@ class DefaultCatRepository(
 
     override fun catsList(): LiveData<List<Cat>> =
         Transformations.map(catDatabase.catDao().getAllCats()) { cats ->
-            cats.map { Cat(it.id, it.url) }
+            cats.map { Cat(it.catId, it.url) }
         }
 }
