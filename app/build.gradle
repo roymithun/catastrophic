@@ -9,6 +9,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'kotlin-parcelize'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion 30
@@ -21,7 +22,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "com.inhouse.catastrophic.CustomTestRunner"
+        testInstrumentationRunner "com.inhouse.catastrophic.HiltTestRunner"
     }
 
     buildTypes {
@@ -53,7 +54,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$version_kotlin"
     implementation "androidx.core:core-ktx:$version_kotlin_ktx"
     implementation "androidx.appcompat:appcompat:$version_androidx"
-    implementation "com.google.android.material:material:$version_androidx"
+    implementation "com.google.android.material:material:1.4.0"
     implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
 
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
@@ -62,8 +63,14 @@ dependencies {
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
 
+    // dependency injection
     implementation "com.google.dagger:dagger:$version_dagger"
     kapt "com.google.dagger:dagger-compiler:$version_dagger"
+    //Dagger - Hilt
+    implementation "com.google.dagger:hilt-android:$version_hilt"
+    kapt "com.google.dagger:hilt-android-compiler:$version_hilt"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
+    kapt "androidx.hilt:hilt-compiler:1.0.0"
 
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
 
@@ -93,4 +100,6 @@ dependencies {
     androidTestImplementation "com.google.truth:truth:1.1.2"
     kaptAndroidTest "com.google.dagger:dagger-compiler:$version_dagger"
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:4.9.1"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$version_hilt"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$version_hilt"
 }

@@ -1,15 +1,28 @@
 package com.inhouse.catastrophic.ui.home
 
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.inhouse.catastrophic.app.repo.CatRepository
+import com.inhouse.catastrophic.app.repo.DefaultCatRepository
 import com.inhouse.catastrophic.app.utils.Resource
 import com.inhouse.catastrophic.app.utils.Status
 import com.inhouse.catastrophic.ui.data.Cat
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel(private val repositoryDefault: CatRepository) : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(private val repositoryDefault: CatRepository) :
+    ViewModel() {
     companion object {
         const val TAG: String = "HomeViewModel"
     }
@@ -19,18 +32,6 @@ class HomeViewModel(private val repositoryDefault: CatRepository) : ViewModel() 
 
     private val _navigateToCatDetail = MutableLiveData<Cat?>()
     val navigateToCatDetail: LiveData<Cat?> = _navigateToCatDetail
-
-    class HomeViewModelFactory(private val repositoryDefault: CatRepository) :
-        ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return HomeViewModel(repositoryDefault) as T
-            }
-            throw IllegalArgumentException("ViewModel is not assignable")
-        }
-
-    }
 
     private var pageIdx: Int = 1
 
@@ -65,7 +66,6 @@ class HomeViewModel(private val repositoryDefault: CatRepository) : ViewModel() 
     }
 
     fun displayCatPhoto(cat: Cat) {
-        Log.d(TAG, "gibow displayCatPhoto cat = $cat")
         _navigateToCatDetail.value = cat
     }
 
@@ -77,4 +77,12 @@ class HomeViewModel(private val repositoryDefault: CatRepository) : ViewModel() 
         pageIdx++
         getCats()
     }
+
+//    @Module
+//    @InstallIn(ViewModelComponent::class)
+//    abstract class HomeModule {
+//        @ViewModelScoped
+//        @Binds
+//        abstract fun bindCatRepository(repository: DefaultCatRepository): CatRepository
+//    }
 }

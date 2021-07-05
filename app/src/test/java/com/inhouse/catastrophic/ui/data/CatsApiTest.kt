@@ -16,6 +16,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.net.HttpURLConnection
@@ -62,9 +63,9 @@ class CatsApiTest {
         mockWebServer.enqueue(response)
         // Act
         runBlocking(coroutineTestRule.testDispatcher) {
-            val actualResponse: List<Cat>? = catsApi.getCats(RESPONSE_LIMIT, 1, MIME_TYPE)
-            // Assert
-            assertThat(actualResponse).contains(
+            val catsResponse: Response<List<Cat>> = catsApi.getCats(RESPONSE_LIMIT, 1, MIME_TYPE)
+            assertThat(catsResponse.isSuccessful).isTrue()
+            assertThat(catsResponse.body()).contains(
                 Cat(
                     id = "2k3",
                     url = "https://cdn2.thecatapi.com/images/2k3.png"
@@ -83,11 +84,11 @@ class CatsApiTest {
         mockWebServer.enqueue(response)
         // Act
         runBlocking(coroutineTestRule.testDispatcher) {
-            val actualResponse: List<Cat>? = catsApi.getCats(RESPONSE_LIMIT, 1, MIME_TYPE)
-            // Assert
-            assertThat(actualResponse).doesNotContain(
+            val catsResponse: Response<List<Cat>> = catsApi.getCats(RESPONSE_LIMIT, 1, MIME_TYPE)
+            assertThat(catsResponse.isSuccessful).isTrue()
+            assertThat(catsResponse.body()).doesNotContain(
                 Cat(
-                    id = "abc",
+                    id = "123",
                     url = "https://cdn2.thecatapi.com/images/2k3.png"
                 )
             )

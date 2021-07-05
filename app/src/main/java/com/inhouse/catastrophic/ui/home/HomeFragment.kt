@@ -9,27 +9,20 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.inhouse.catastrophic.app.BaseApplication
 import com.inhouse.catastrophic.databinding.FragmentHomeBinding
 import com.inhouse.catastrophic.ui.data.Cat
 import com.inhouse.catastrophic.ui.home.adapter.PhotoAdapter
-import com.inhouse.catastrophic.ui.home.di.HomeComponent
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private val mainComponent: HomeComponent by lazy {
-        (requireActivity().application as BaseApplication)
-            .appComponent
-            .homeComponent()
-            .create(this)
-    }
 
-    @Inject
-    lateinit var homeViewModel: HomeViewModel
+    private val homeViewModel: HomeViewModel by activityViewModels()
     private lateinit var rvCatPhotos: RecyclerView
     private lateinit var photoAdapter: PhotoAdapter
     private lateinit var gridLayoutManager1: GridLayoutManager
@@ -66,7 +59,6 @@ class HomeFragment : Fragment() {
             }
         }
         homeViewModel.navigateToCatDetail.observe(viewLifecycleOwner) {
-            Log.d("HomeFragment", "gibow navigateToCatDetail for cat = $it")
             it?.let {
                 findNavController().navigate(
                     HomeFragmentDirections.actionHomeFragmentToDetailFragment(
@@ -81,7 +73,7 @@ class HomeFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        mainComponent.inject(this)
+//        mainComponent.inject(this)
     }
 
     override fun onResume() {

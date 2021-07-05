@@ -3,22 +3,25 @@ package com.inhouse.catastrophic.app.di
 import android.content.Context
 import androidx.room.Room
 import com.inhouse.catastrophic.app.db.CatDatabase
-import com.inhouse.catastrophic.app.repo.CatRepository
-import com.inhouse.catastrophic.app.repo.DefaultCatRepository
+import com.inhouse.catastrophic.app.utils.BASE_URL
 import com.inhouse.catastrophic.app.utils.DATABASE_NAME
 import com.inhouse.catastrophic.ui.data.CatsApi
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
-class DataModule {
-    @Provides
+@InstallIn(SingletonComponent::class)
+object DataModule {
     @Singleton
-    fun catDatabase(context: Context) =
-        Room.databaseBuilder(context, CatDatabase::class.java, DATABASE_NAME).build()
-
     @Provides
-    fun catRepository(catDatabase: CatDatabase, catsApi: CatsApi): CatRepository =
-        DefaultCatRepository(catDatabase, catsApi)
+    fun catDatabase(@ApplicationContext context: Context) =
+        Room.databaseBuilder(context, CatDatabase::class.java, DATABASE_NAME).build()
 }

@@ -12,8 +12,11 @@ import com.inhouse.catastrophic.ui.data.CatsApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class DefaultCatRepository(
+@Singleton
+class DefaultCatRepository @Inject constructor(
     private val catDatabase: CatDatabase,
     private val catsApi: CatsApi
 ) : CatRepository {
