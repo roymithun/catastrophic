@@ -48,9 +48,9 @@ class CatDaoTest {
 
     @Test
     fun insertAllCats_checkIfAllValuesArePresentInDb() = runBlockingTest {
-        val catEntity1 = CatEntity("1", "some_url")
-        val catEntity2 = CatEntity("2", "some_url")
-        val listOfCats = listOf<CatEntity>(catEntity1, catEntity2)
+        val catEntity1 = CatEntity(1, "1", "some_url")
+        val catEntity2 = CatEntity(2, "2", "some_url")
+        val listOfCats = listOf(catEntity1, catEntity2)
 
         dao.insertAll(listOfCats)
 
