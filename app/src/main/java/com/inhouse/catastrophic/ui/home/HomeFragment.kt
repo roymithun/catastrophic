@@ -46,7 +46,7 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.homeViewModel = homeViewModel
-        homeViewModel.networkError.observe(viewLifecycleOwner) {
+        homeViewModel.networkErrorState.observe(viewLifecycleOwner) {
             it?.let {
                 if (it) {
                     binding.rvCatPhotos.visibility = View.GONE
