@@ -1,4 +1,4 @@
-package com.inhouse.catastrophic.ui.adapter
+package com.inhouse.catastrophic.ui.home.adapter
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView

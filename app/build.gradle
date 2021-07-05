@@ -7,6 +7,8 @@ apply plugin: 'com.android.application'
 apply from: 'buildscripts/jacoco.gradle'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'kotlin-parcelize'
 
 android {
     compileSdkVersion 30
@@ -53,6 +55,9 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$version_androidx"
     implementation "com.google.android.material:material:$version_androidx"
     implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
+
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"

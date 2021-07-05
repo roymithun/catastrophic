@@ -8,6 +8,9 @@
         <variable
             name="cat"
             type="com.inhouse.catastrophic.ui.data.Cat" />
+        <variable
+            name="clickListener"
+            type="com.inhouse.catastrophic.ui.home.adapter.PhotoAdapter.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,6 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:adjustViewBounds="true"
+            android:onClick="@{()->clickListener.onClick(cat)}"
             android:padding="1dp"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"

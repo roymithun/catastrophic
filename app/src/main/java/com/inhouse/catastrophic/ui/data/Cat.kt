@@ -1,7 +1,7 @@
 package com.inhouse.catastrophic.ui.data
 
-data class Cat(val id: String, val url: String)
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
-fun Cat.asDatabaseModel() {
-    
-}
+@Parcelize
+data class Cat(val id: String, val url: String) : Parcelable
