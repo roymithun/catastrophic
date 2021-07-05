@@ -8,12 +8,14 @@
         <variable
             name="cat"
             type="com.inhouse.catastrophic.ui.data.Cat" />
+
         <variable
             name="clickListener"
             type="com.inhouse.catastrophic.ui.home.adapter.PhotoAdapter.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
